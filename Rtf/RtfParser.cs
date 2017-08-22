@@ -6,6 +6,7 @@
 
     public class RtfParser
     {
+        private Encoding en1251 = Encoding.GetEncoding(1251); // only 1251
         private IRtfParserListener _listener;
         private TextReader _reader;
         private StringBuilder _textAcc;
@@ -89,8 +90,8 @@
         {
             var h1 = (char)_reader.Read();
             var h2 = (char)_reader.Read();
-            int code = Convert.ToInt32(h1.ToString() + h2, 16);
-            _textAcc.Append((char)code);
+            byte code = Convert.ToByte(h1.ToString() + h2, 16);
+            _textAcc.Append(en1251.GetString(new byte[] { code }));
         }
 
         private void ReadTag()
